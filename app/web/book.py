@@ -1,9 +1,9 @@
-from flask import jsonify, Blueprint, request
-import json
+from flask import jsonify, request
 
+from app.forms.book import SearchForm
 from app.web import web
-from helper import is_isbn_or_key
-from yushu_book import YuShuBook
+from app.libs.helper import is_isbn_or_key
+from app.spider.yushu_book import YuShuBook
 
 
 @web.route('/book/search')
@@ -14,19 +14,29 @@ def search():
     :return:
     ?q=金庸&page=1
     """
-    # request.args 返回的是一个不可变字典，要转为普通字典使用：
-    # request.args.to_dict()
-    q = request.args['q']
-    # q至少要有一个字符，也要有长度限制
-    page = request.args['page']
-    # page必须是正整数，也要有一个最大值的限制
-    isbn_or_key = is_isbn_or_key(q)
-    if isbn_or_key == 'isbn':
-        result = YuShuBook.search_by_isbn(q)
-    else:
-        result = YuShuBook.search_by_keyword(q)
+    # 方法一：
+    # # request.args 返回的是一个不可变字典，要转为普通字典使用：
+    # # request.args.to_dict()
+    # q = request.args['q']
+    # # q至少要有一个字符，也要有长度限制
+    # page = request.args['page']
+    # # page必须是正整数，也要有一个最大值的限制
+    # 然后加入自己逻辑对 q, page 进行校验
 
-    return jsonify(result)
-    # return json.dumps(result), 200, {'content-type': 'application/json'}
-    # jsonify(result) 与 json.dumps(result), 200, {'content-type': 'application/json'}
-    # 效果等同
+    # 方法二：
+    form = SearchForm(request.args)  # 验证器验证成功返回 True, 失败返回 False
+    if form.validate():
+        q = form.q.data.strip()
+        page = form.page.data
+        isbn_or_key = is_isbn_or_key(q)
+        if isbn_or_key == 'isbn':
+            result = YuShuBook.search_by_isbn(q)
+        else:
+            result = YuShuBook.search_by_keyword(q, page)
+
+        return jsonify(result)
+        # return json.dumps(result), 200, {'content-type': 'application/json'}
+        # jsonify(result) 与 json.dumps(result), 200, {'content-type': 'application/json'}
+        # 效果等同
+    else:
+        return jsonify(form.errors)

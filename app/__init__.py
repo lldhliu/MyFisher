@@ -3,6 +3,8 @@
 """
 from flask import Flask
 
+from app.models.book import db
+
 __author__ = "ldh"
 
 
@@ -12,6 +14,17 @@ def create_app():
     app.config.from_object('app.setting')
     app.config.from_object('app.secure')
     register_blueprint(app)
+
+    db.init_app(app)
+
+    db.create_all()
+    # 上面这样写会报错： RuntimeError: No application found.
+    # Either work inside a view function or push an application
+    # 方案一： 将app核心对象作为关键字参数传入 db.create_all(app=app)
+
+    with app.app_context():
+        db.create_all()
+
     return app
 
 

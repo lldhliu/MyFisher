@@ -3,4 +3,5 @@
 """
 __author__ = "ldh"
 
-DEBUG = "True"
+# 每页显示条目
+PER_PAGE = 15
