@@ -17,7 +17,7 @@ def create_app():
 
     db.init_app(app)
 
-    db.create_all()
+    # db.create_all()
     # 上面这样写会报错： RuntimeError: No application found.
     # Either work inside a view function or push an application
     # 方案一： 将app核心对象作为关键字参数传入 db.create_all(app=app)

@@ -3,7 +3,7 @@
 """
 __author__ = "ldh"
 
-DEBUG = "True"
+DEBUG = False
 
 SQLALCHEMY_DATABASE_URI = 'mysql+cymysql://root:2255@localhost:3306/fisher'
 SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -5,6 +5,20 @@ from app.web import web
 from app.libs.helper import is_isbn_or_key
 from app.spider.yushu_book import YuShuBook
 
+# 测试flask线程隔离
+# @web.route('/test')
+# def test():
+#     from flask import request
+#     from app.libs.none_local import n
+#     print(n.v)
+#     n.v = 2
+#     print('----------------------')
+#     print(getattr(request, 'v', None))
+#     setattr(request, 'v', 2)
+#     # print(getattr(request, 'v', None))
+#     print('------------------')
+#     return ''
+
 
 @web.route('/book/search')
 def search():
