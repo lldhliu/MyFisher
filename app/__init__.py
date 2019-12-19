@@ -3,7 +3,7 @@
 """
 from flask import Flask
 
-from app.models.book import db
+from app.models.base import db
 
 __author__ = "ldh"
 

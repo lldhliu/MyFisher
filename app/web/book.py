@@ -1,12 +1,13 @@
 import json
 
-from flask import jsonify, request
+from flask import jsonify, request, flash, render_template
 
 from app.forms.book import SearchForm
 from app.view_models.book import BookViewModel, BookCollection
 from app.web import web
 from app.libs.helper import is_isbn_or_key
 from app.spider.yushu_book import YuShuBook
+
 
 # 测试flask线程隔离
 # @web.route('/test')
@@ -63,7 +64,19 @@ def search():
         jsonify(result) 与 json.dumps(result), 200, {'content-type': 'application/json'}
         效果等同
         """
-        return json.dumps(books, default=lambda o: o.__dict__)
+        # return json.dumps(books, default=lambda o: o.__dict__)
 
     else:
-        return jsonify(form.errors)
+        # return jsonify(form.errors)
+        flash('搜索的关键字不符合要求，请重新输入关键字！')
+    return render_template('search_result.html', books=books, form=form)
+
+
+# 书籍详情页面
+@web.route('/book/<isbn>/detail')
+def book_detail(isbn):
+    yushu_book = YuShuBook()
+    yushu_book.search_by_isbn(isbn)
+    book = BookViewModel(yushu_book.first)
+    return render_template('book_detail.html', book=book, wishes=[], gifts=[])
+

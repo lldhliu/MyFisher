@@ -7,6 +7,7 @@ from wtforms.validators import Length, NumberRange, DataRequired
 __author__ = "ldh"
 
 
+# 图书查询参数校验
 class SearchForm(Form):
     # DataRequired 防止用户只传一个空格情况
     q = StringField(validators=[DataRequired(), Length(min=1, max=30)])

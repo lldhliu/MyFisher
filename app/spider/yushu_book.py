@@ -36,6 +36,11 @@ class YuShuBook:
     def calculate_start(self, page):
         return (page - 1) * current_app.config['PER_PAGE']
 
+    # 返回第一个元素
+    @property
+    def first(self):
+        return self.books[0] if self.total >= 1 else None
+
 
 # 重构前
 class _YuShuBook:
