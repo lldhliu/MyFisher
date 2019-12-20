@@ -28,6 +28,9 @@ class RegisterForm(Form):
         if User.query.filter_by(email=field.data).first():  # .first() 是触发语句，只有触发语句才开始执行查询
             raise ValidationError('电子邮件已被注册')
 
+    def validate_nickname(self, field):
+        if User.query.filter_by(nickname=field).first():
+            raise ValidationError('昵称已存在')
 
 class LoginForm(Form):
     email = StringField(validators=[DataRequired(), Length(8, 64), Email('电子邮箱不符合规范')])
