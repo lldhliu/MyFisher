@@ -1,11 +1,12 @@
-
+from flask_login import login_required  # 判断用户是否登录的插件
 from . import web
 __author__ = '七月'
 
 
 @web.route('/my/gifts')
+@login_required
 def my_gifts():
-    pass
+    return 'My Gifts'
 
 
 @web.route('/gifts/book/<isbn>')
