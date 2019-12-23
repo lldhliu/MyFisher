@@ -2,7 +2,7 @@
  Created by ldh on 19-12-19
 """
 from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, BaseQuery
 from sqlalchemy import Column, SmallInteger, Integer
 from contextlib import contextmanager
 
@@ -18,7 +18,15 @@ class SQLAlchemy(_SQLAlchemy):
             raise e
 
 
-db = SQLAlchemy()
+class Query(BaseQuery):
+    # 自定义 filter_by
+    def filter_by(self, **kwargs):
+        if 'status' not in kwargs.keys():
+            kwargs['status'] = 1
+        return super(Query, self).filter_by(**kwargs)  # 加上 ** 对字典进行解包
+
+
+db = SQLAlchemy(query_class=Query)
 
 
 class Base(db.Model):
@@ -34,3 +42,10 @@ class Base(db.Model):
         for key, value in attrs_dict.items():
             if hasattr(self, key) and key != 'id':  # 判断是否拥有 key 属性
                 setattr(self, key, value)  # 给 key 属性设置属性值 value
+
+    @property
+    def create_datetime(self):
+        if self.create_time:
+            return datetime.fromtimestamp(self.create_time)
+        else:
+            return None
