@@ -52,7 +52,6 @@ def forget_password_request():
         account_email = form.email.data
         user = User.query.filter_by(email=account_email).first_or_404()
     return render_template('auth/forget_password_request.html', form=form)
-    pass
 
 
 @web.route('/reset/password/<token>', methods=['GET', 'POST'])
