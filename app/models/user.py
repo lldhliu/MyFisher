@@ -1,18 +1,24 @@
 """
  Created by ldh on 19-12-19
 """
+from flask import current_app
 from sqlalchemy import Column, Integer, String, Boolean, Float
 
 from app import login_manager
+from app.libs.enums import PendingStatus
 from app.libs.helper import is_isbn_or_key
-from app.models.base import Base
+from app.models.base import Base, db
 from werkzeug.security import generate_password_hash  # 加密password
 from werkzeug.security import check_password_hash  # 密码对比
 from flask_login import UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from math import floor  # 向下取整  floor(3/2)=1
 
+from app.models.drift import Drift
 from app.models.gift import Gift
 from app.models.wish import Wish
 from app.spider.yushu_book import YuShuBook
+
 
 __author__ = "ldh"
 
@@ -42,6 +48,25 @@ class User(UserMixin, Base):
         :return:
         """
         self._password = generate_password_hash(raw)
+
+    def can_send_drift(self):
+        """
+        检查用户是否可以发送鱼漂：
+        1.鱼豆是否满足条件
+        2. 每索要两本书，必须送出一本书
+        :return:
+        """
+        if self.beans < 1:
+            return False
+        # 成功送出图书数量
+        success_gifts_count = Gift.query.filter_by(uid=self.id,
+                                                   launched=True).count()
+        # 成功收到书籍数量
+        success_recive_count = Drift.query.filter_by(requester_id=self.id,
+                                                     pending=PendingStatus.Success).count()
+        return True if \
+            floor(success_recive_count/2) <= \
+            floor(success_gifts_count) else False
 
     def check_password(self, raw):
         """
@@ -83,6 +108,43 @@ class User(UserMixin, Base):
     # # 所以让 User 模型继承 UserMinxin 就可以
     # def get_id(self):
     #     return self.id
+
+    def geneate_token(self, expiration=600):
+        """
+        用户重置密码时发送重置密码链接的时候需要将用户id加密成token
+        生成 token
+        :param expiration: 过期时间
+        :return:
+        """
+        s = Serializer(current_app.config['SECRET_KEY'], expiration)
+        return s.dumps({'id': self.id}).decode('utf-8')  # 把 byte decode
+
+    @staticmethod
+    def reset_password(token, new_password):
+        s = Serializer(current_app.config['SECRET_KEY'])
+        try:
+            data = s.loads(token.encode('utf-8'))
+        except:
+            return False
+        uid = data.get('id')
+        print(uid)
+        with db.auto_commit():
+            user = User.query.get(uid)
+            if user:
+                print(user.email)
+                user.password = new_password
+            else:
+                return False
+        return True
+
+    @property
+    def summary(self):
+        return dict(
+            nickname=self.nickname,
+            beans=self.beans,
+            email=self.email,
+            send_receive=str(self.send_counter) + '/' + str(self.receive_counter)
+        )
 
 
 @login_manager.user_loader

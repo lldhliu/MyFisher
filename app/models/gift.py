@@ -26,6 +26,9 @@ class Gift(Base):
     # 这里使用 book 对应的唯一 isbn 进行关联
     isbn = Column(String(15), nullable=False)  # 图书编号
 
+    def is_yourself_gift(self, uid):
+        return True if self.uid == uid else False
+
     # 查询用户的所有礼物
     @classmethod
     def get_user_gifts(cls, uid):

@@ -4,10 +4,12 @@
 from flask import Flask
 from flask_login import LoginManager  # 用来管理用户登录信息 如 cookie
 from app.models.base import db
+from flask_mail import Mail
 
 __author__ = "ldh"
 
 login_manager = LoginManager()
+mail = Mail()
 
 
 # Flask 核心对象初始化的相关工作
@@ -22,6 +24,8 @@ def create_app():
 
     login_manager.login_view = 'web.login'  # login_required验证用户没登录时引导用户到登录页面
     login_manager.login_message = '请先登录或注册'  # 替换引导到登录界面的提示信息
+
+    mail.init_app(app)
 
     # db.create_all()
     # 上面这样写会报错： RuntimeError: No application found.

@@ -5,6 +5,7 @@ from app.view_models.book import BookViewModel
 
 __author__ = "ldh"
 
+
 class MyWishes:
     def __init__(self, gifts_of_mine, wish_count_list):
         self.wishes = []

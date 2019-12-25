@@ -2,7 +2,7 @@
  Created by ldh on 19-12-19
 """
 from wtforms import Form, StringField, IntegerField, PasswordField, ValidationError
-from wtforms.validators import Length, NumberRange, DataRequired, Email
+from wtforms.validators import Length, NumberRange, DataRequired, Email, EqualTo
 
 from app.models.user import User
 
@@ -37,3 +37,11 @@ class RegisterForm(EmailForm):
 
 class LoginForm(EmailForm):
     password = PasswordField(validators=[DataRequired(message='密码不可以为空, 请输入你的密码'), Length(6, 32)])
+
+
+class ResetPasswordForm(Form):
+    password1 = PasswordField(validators=[DataRequired(),
+                                          Length(6, 32, message='密码长度至少需要在6到32个字符之间'),
+                                          EqualTo('password2', message='两次输入的密码不相同')])
+    password2 = PasswordField(validators=[DataRequired(),
+                                          Length(6, 32)])
