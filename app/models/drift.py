@@ -3,6 +3,7 @@
 """
 from sqlalchemy import Column, Integer, String, SmallInteger
 
+from app.libs.enums import PendingStatus
 from app.models.base import Base
 
 __author__ = "ldh"
@@ -31,9 +32,17 @@ class Drift(Base):
     requester_nickname = Column(String(20))
 
     # 赠送者信息
-    gifter_id = Column(Integer)  # 请求人id
-    gift_id = Column(Integer)  # 交易对应礼物的id
+    gifter_id = Column(Integer)
+    gift_id = Column(Integer)
     gifter_nickname = Column(String(20))
 
     # 鱼漂状态 （等待、成功、拒绝、撤销）
-    pending = Column('pending', SmallInteger, default=1)
+    _pending = Column('pending', SmallInteger, default=1)
+
+    @property
+    def pending(self):
+        return PendingStatus(self._pending)
+
+    @pending.setter
+    def pending(self, status):
+        self._pending = status.value

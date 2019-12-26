@@ -13,7 +13,7 @@ class MyWishes:
         self.__wishes_of_mine = gifts_of_mine
         self.__gift_count_list = wish_count_list
 
-        self.gifts = self.__parse()
+        self.wishes = self.__parse()
 
     def __parse(self):
         temp_wishes = []
