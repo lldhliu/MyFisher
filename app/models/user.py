@@ -1,6 +1,8 @@
 """
- Created by ldh on 19-12-19
+ Created by ldh on 19-12-12
 """
+__author__ = "刘大怪"
+
 from flask import current_app
 from sqlalchemy import Column, Integer, String, Boolean, Float
 
@@ -18,9 +20,6 @@ from app.models.drift import Drift
 from app.models.gift import Gift
 from app.models.wish import Wish
 from app.spider.yushu_book import YuShuBook
-
-
-__author__ = "ldh"
 
 
 class User(UserMixin, Base):
@@ -65,7 +64,7 @@ class User(UserMixin, Base):
         success_recive_count = Drift.query.filter_by(requester_id=self.id,
                                                      pending=PendingStatus.Success).count()
         return True if \
-            floor(success_recive_count/2) <= \
+            floor(success_recive_count / 2) <= \
             floor(success_gifts_count) else False
 
     def check_password(self, raw):
@@ -127,11 +126,11 @@ class User(UserMixin, Base):
         except:
             return False
         uid = data.get('id')
-        print(uid)
+        # print(uid)
         with db.auto_commit():
             user = User.query.get(uid)
             if user:
-                print(user.email)
+                # print(user.email)
                 user.password = new_password
             else:
                 return False

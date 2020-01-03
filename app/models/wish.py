@@ -1,14 +1,14 @@
 """
- Created by ldh on 19-12-20
+ Created by ldh on 19-12-12
 """
+__author__ = "刘大怪"
+
 from sqlalchemy import Column, Integer, Boolean, ForeignKey, String, desc, func
 from sqlalchemy.orm import relationship
 
 from app.models.base import Base, db
 # from app.models.gift import Gift
 from app.spider.yushu_book import YuShuBook
-
-__author__ = "ldh"
 
 
 class Wish(Base):

@@ -1,6 +1,8 @@
 """
- Created by ldh on 19-12-19
+ Created by ldh on 19-12-12
 """
+__author__ = "刘大怪"
+
 from flask import current_app
 from sqlalchemy import Column, Integer, Boolean, ForeignKey, String, desc, func
 from sqlalchemy.orm import relationship
@@ -8,8 +10,6 @@ from sqlalchemy.orm import relationship
 from app.models.base import Base, db
 from app.models.wish import Wish
 from app.spider.yushu_book import YuShuBook
-
-__author__ = "ldh"
 
 
 class Gift(Base):
@@ -46,8 +46,8 @@ class Gift(Base):
         """
         # 跨表查询 db.session 方式更好
         count_list = db.session.query(func.count(Wish.id), Wish.isbn).filter(Wish.launched == 'False',
-                                      Wish.isbn.in_(isbn_list),
-                                      Wish.status == 1).group_by(
+                                                                             Wish.isbn.in_(isbn_list),
+                                                                             Wish.status == 1).group_by(
             Wish.isbn).all()
         # count_list 是一组包含元祖的列表, 不适合直接返回
         # 适合返回的对象： 1. 对象  2. 字典

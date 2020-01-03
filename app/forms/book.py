@@ -1,10 +1,10 @@
 """
- Created by ldh on 19-12-11
+ Created by ldh on 19-12-12
 """
+__author__ = "刘大怪"
+
 from wtforms import Form, StringField, IntegerField
 from wtforms.validators import Length, NumberRange, DataRequired, Regexp
-
-__author__ = "ldh"
 
 
 # 图书查询参数校验

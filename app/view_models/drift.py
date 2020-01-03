@@ -1,9 +1,9 @@
 """
- Created by ldh on 19-12-26
+ Created by ldh on 19-12-12
 """
-from app.libs.enums import PendingStatus
+__author__ = "刘大怪"
 
-__author__ = "ldh"
+from app.libs.enums import PendingStatus
 
 
 class DriftViewModel:

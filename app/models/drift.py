@@ -1,12 +1,12 @@
 """
- Created by ldh on 19-12-25
+ Created by ldh on 19-12-12
 """
+__author__ = "刘大怪"
+
 from sqlalchemy import Column, Integer, String, SmallInteger
 
 from app.libs.enums import PendingStatus
 from app.models.base import Base
-
-__author__ = "ldh"
 
 
 class Drift(Base):

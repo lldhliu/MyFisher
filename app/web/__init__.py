@@ -1,3 +1,8 @@
+"""
+ Created by ldh on 19-12-24
+"""
+__author__ = "刘大怪"
+
 from flask import Blueprint, render_template
 
 # web 蓝图的相关初始化工作
@@ -18,4 +23,4 @@ from app.web import drift
 from app.web import gift
 from app.web import wish
 from app.web import main
-from app.web import test
+# from app.web import test

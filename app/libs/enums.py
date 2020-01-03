@@ -1,7 +1,7 @@
 """
- Created by ldh on 19-12-25
+ Created by ldh on 19-12-12
 """
-__author__ = "ldh"
+__author__ = "刘大怪"
 
 from enum import Enum
 
@@ -40,6 +40,6 @@ class PendingStatus(Enum):
 
 if __name__ == "__main__":
     print(PendingStatus.Success, type(PendingStatus.Success))
-    b=PendingStatus.Success
+    b = PendingStatus.Success
     a = PendingStatus.pending_str(b, 'gifter')
     print(a)

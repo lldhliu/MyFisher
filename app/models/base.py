@@ -1,6 +1,8 @@
 """
- Created by ldh on 19-12-19
+ Created by ldh on 19-12-12
 """
+__author__ = "刘大怪"
+
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy as _SQLAlchemy, BaseQuery
 from sqlalchemy import Column, SmallInteger, Integer
@@ -49,3 +51,6 @@ class Base(db.Model):
             return datetime.fromtimestamp(self.create_time)
         else:
             return None
+
+    def delete(self):
+        self.status = 0

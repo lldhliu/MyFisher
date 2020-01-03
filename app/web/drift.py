@@ -1,3 +1,8 @@
+"""
+ Created by ldh on 19-12-24
+"""
+__author__ = "刘大怪"
+
 from flask import flash, redirect, url_for, render_template, request
 from flask_login import login_required, current_user
 from sqlalchemy import desc, or_
@@ -13,8 +18,6 @@ from app.models.wish import Wish
 from app.view_models.book import BookViewModel
 from app.view_models.drift import DriftCollection
 from app.web import web
-
-__author__ = '七月'
 
 
 @web.route('/drift/<int:gid>', methods=['GET', 'POST'])
@@ -89,6 +92,7 @@ def redraw_drift(did):
 
 
 @web.route('/drift/<int:did>/mailed')
+@login_required
 def mailed_drift(did):
     with db.auto_commit():
         drift = Drift.query.filter_by(gifter_id=current_user.id, id=did).first_or_404()
@@ -98,7 +102,9 @@ def mailed_drift(did):
         gift = Gift.query.filter_by(id=drift.gift_id).first_or_404()
         gift.launched = True
 
-        Wish.query.filter_by(isbn=drift.isbn, uid=drift.requester_id, launched=False).update({Wish.launched: True})
+        # 另一种查询更改方式
+        Wish.query.filter_by(isbn=drift.isbn, uid=drift.requester_id, launched=False) \
+            .update({Wish.launched: True})
         return redirect(url_for('web.pending'))
 
 

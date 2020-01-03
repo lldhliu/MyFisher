@@ -1,13 +1,18 @@
+"""
+ Created by ldh on 19-12-24
+"""
+__author__ = "刘大怪"
+
 from flask import render_template, request, redirect, url_for, flash
-from flask_login import login_user  # 可以保存用户的票据信息的库
+from flask_login import login_user, login_required, current_user  # 可以保存用户的票据信息的库
 from flask_login import logout_user
-from app.forms.auth import RegisterForm, LoginForm, EmailForm, ResetPasswordForm
+from app.forms.auth import RegisterForm, LoginForm, EmailForm, ResetPasswordForm, ChangePasswordForm
 from app.libs.email import send_mail
 from app.models.base import db
-from app.models.user import User
-from app.web import web
 
-__author__ = '七月'
+from app.models.user import User
+
+from app.web import web
 
 
 @web.route('/register', methods=['GET', 'POST'])
@@ -78,8 +83,22 @@ def forget_password(token):
 
 
 @web.route('/change/password', methods=['GET', 'POST'])
+@login_required
 def change_password():
-    pass
+    form = ChangePasswordForm(request.form)
+    if form.old_password.data == form.new_password1.data:
+        flash('新密码与旧密码一致, 请确认后重新输入')
+    else:
+        if request.method == 'POST' and form.validate():
+            success = current_user.check_password(form.old_password.data)
+            if success:
+                with db.auto_commit():
+                    current_user.password = form.new_password1.data
+                flash('你的密码已修改, 请使用新密码登录')
+                return redirect(url_for('web.login'))
+            else:
+                flash('原密码输入有误')
+    return render_template('auth/change_password.html', form=form)
 
 
 @web.route('/logout')

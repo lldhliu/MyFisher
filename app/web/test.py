@@ -1,11 +1,11 @@
 """
  Created by ldh on 19-12-20
 """
+__author__ = "刘大怪"
+
 from flask import make_response, session
 
 from app.web import web
-
-__author__ = "ldh"
 
 
 @web.route('/set/cookie')

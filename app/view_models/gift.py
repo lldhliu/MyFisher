@@ -1,11 +1,12 @@
 """
  Created by ldh on 19-12-24
 """
+__author__ = "刘大怪"
+
 from collections import namedtuple
 
 from app.view_models.book import BookViewModel
 
-__author__ = "ldh"
 
 # # 这是使用一下 namedtuple
 # MyGift = namedtuple('MyGift', ['id', 'book', 'wishes_count'])

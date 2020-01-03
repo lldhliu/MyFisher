@@ -1,9 +1,9 @@
 """
  Created by ldh on 19-12-23
 """
-from app.view_models.book import BookViewModel
+__author__ = "刘大怪"
 
-__author__ = "ldh"
+from app.view_models.book import BookViewModel
 
 
 # Gift, Wish 通用交易 viewmodel

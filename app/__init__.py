@@ -1,12 +1,13 @@
 """
  Created by ldh on 19-11-26
 """
+__author__ = "刘大怪"
+
 from flask import Flask
 from flask_login import LoginManager  # 用来管理用户登录信息 如 cookie
 from app.models.base import db
 from flask_mail import Mail
 
-__author__ = "ldh"
 
 login_manager = LoginManager()
 mail = Mail()

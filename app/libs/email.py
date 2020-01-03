@@ -1,3 +1,8 @@
+"""
+ Created by ldh on 19-12-12
+"""
+__author__ = "刘大怪"
+
 from threading import Thread
 
 from flask import current_app, render_template
@@ -31,4 +36,3 @@ def send_mail(to, subject, template, **kwargs):
 
     thr = Thread(target=send_async_email, args=[app, msg])
     thr.start()
-

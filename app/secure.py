@@ -1,7 +1,8 @@
 """
  Created by ldh on 19-11-26
 """
-__author__ = "ldh"
+__author__ = "刘大怪"
+
 
 DEBUG = True
 SECRET_KEY = 'this is a secret key'

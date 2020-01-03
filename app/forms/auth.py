@@ -1,12 +1,12 @@
 """
- Created by ldh on 19-12-19
+ Created by ldh on 19-12-12
 """
+__author__ = "刘大怪"
+
 from wtforms import Form, StringField, IntegerField, PasswordField, ValidationError
 from wtforms.validators import Length, NumberRange, DataRequired, Email, EqualTo
 
 from app.models.user import User
-
-__author__ = "ldh"
 
 
 class EmailForm(Form):
@@ -45,3 +45,11 @@ class ResetPasswordForm(Form):
                                           EqualTo('password2', message='两次输入的密码不相同')])
     password2 = PasswordField(validators=[DataRequired(),
                                           Length(6, 32)])
+
+
+class ChangePasswordForm(Form):
+    old_password = PasswordField(validators=[DataRequired(message='原密码不可以为空, 请输入你的密码'), Length(6, 32)])
+    new_password1 = PasswordField(validators=[DataRequired(message='新密码不可以为空, 请输入你的密码'),
+                                              Length(6, 32, message='密码长度至少需要在6到32个字符之间'),
+                                              EqualTo('new_password2', message='两次输入的密码不相同')])
+    new_password2 = PasswordField(validators=[DataRequired(), Length(6, 32)])

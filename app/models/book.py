@@ -1,11 +1,11 @@
 """
- Created by ldh on 19-12-11
+ Created by ldh on 19-12-12
 """
+__author__ = "刘大怪"
+
 from sqlalchemy import Column, Integer, String
 
 from app.models.base import Base
-
-__author__ = "ldh"
 
 
 class Book(Base):
